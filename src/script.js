@@ -22,12 +22,6 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 const matcapTexture = textureLoader.load('/textures/matcaps/2.png')
-
-
-
-
-
-
 matcapTexture.colorSpace = THREE.SRGBColorSpace
 
 //FOnts
@@ -39,6 +33,7 @@ fontLoader.load(
     {
         const textGeometry = new TextGeometry(
             'Abhishek  Patel',
+          //  'Software Developer',
             {
                 font: font,
                 size: 0.5,
@@ -59,12 +54,45 @@ fontLoader.load(
         // )
         textGeometry.center()
 
+        const textGeometry2 = new TextGeometry('Full - Stack    Developer', {
+            font: font,
+            size: 0.2,
+            height: 0.1,
+            curveSegments: 3,
+            bevelEnabled: true,
+            bevelThickness: 0.03,
+            bevelSize: 0.02,
+            bevelOffset: 0,
+            bevelSegments: 4,
+        });
+        textGeometry2.computeBoundingBox();
+        textGeometry2.center();
 
 
-        const textMaterial = new THREE.MeshMatcapMaterial({matcap: matcapTexture})
-        //textMaterial.wireframe = true
-        const text = new THREE.Mesh(textGeometry, textMaterial)
-        scene.add(text)
+     // Position the second text geometry above the first one
+    const verticalSpacing = -1.5; // Adjust this value based on your preference
+    textGeometry2.translate(0, textGeometry.boundingBox.max.y + verticalSpacing, 0);
+
+    // Create materials and meshes for both text geometries
+    const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture }); 
+    const textMaterial1 = new THREE.MeshMatcapMaterial({ matcap: matcapTexture, color:'red' });
+
+    const text1 = new THREE.Mesh(textGeometry, textMaterial);
+    const text2 = new THREE.Mesh(textGeometry2, textMaterial1);
+
+    // Add both text meshes to the scene
+    scene.add(text1);
+    scene.add(text2);
+
+        // const textMaterial = new THREE.MeshMatcapMaterial({matcap: matcapTexture})
+        // //textMaterial.wireframe = true
+        // const text = new THREE.Mesh(textGeometry, textMaterial)
+        // scene.add(text)
+        
+        // const textMaterial = new THREE.MeshMatcapMaterial({matcap: matcapTexture})
+        // //textMaterial.wireframe = true
+        // const text = new THREE.Mesh(textGeometry, textMaterial)
+        // scene.add(text)
 
         const roundGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.3)
         const roundMaterial = new THREE.MeshMatcapMaterial({matcap: matcapTexture, color:'orange'})
@@ -90,6 +118,8 @@ fontLoader.load(
 
     }
 )
+
+
 
 /**
  * Object
@@ -130,8 +160,8 @@ window.addEventListener('resize', () =>
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
-camera.position.y = 1
-camera.position.z = 2
+camera.position.y = -2
+camera.position.z = 4
 scene.add(camera)
 
 // Controls
